@@ -43,7 +43,13 @@ The subject of our project is regarding female participation in the workforce. T
 
 At the end of the report, we will plan to include a summary that highlights the takeaways from our findings. In this summary, we plan to include information on the evolution of females in the labor force, its current state, and factors that affect its growth or lack of growth. Finally at the very end, we will include a sub-note that conceptually defines “work” and how work has been measured from survey data. 
 
-***This topic and report are aimed around the human value of gender equality***. There is a clear lag of female labor force participation in comparison to men labor force participation and through this report, we hope to unveil two things. *The first is a good understanding of the current state of the female labor force and the second is the reasons why the female labor force is at the state it is in*. Direct stakeholders involved with this data and report might include individuals who are passionate about gender inequality and specifically want to learn more about female labor force participation. Indirect stakeholders might be legislators who are being presented this data by advocates who are passionate about increasing female labor workforce participation. Possible harms include making assumptions in our analysis about the outcomes and implications these datasets are revealing. Potential benefits include increasing the awareness around female labor force participation and encouraging action. 
+* *Human Values*
+  + This topic and report are aimed around the human value of gender equality. There is a clear lag of female labor force participation in comparison to men labor force participation and through this report, we hope to unveil two things. The first is a good understanding of the current state of the female labor force and the second is the reasons why the female labor force is at the state it is in. 
+  
+* *Direct and Indirect Stakeholders*  
+  + Direct stakeholders involved with this data and report might include individuals who are passionate about gender inequality and specifically want to learn more about female labor force participation. Indirect stakeholders might be legislators who are being presented this data by advocates who are passionate about increasing female labor workforce participation. 
+* *Potential Benefits and Harms*
+  + Possible harms include making assumptions in our analysis about the outcomes and implications these datasets are revealing. Potential benefits include increasing the awareness around female labor force participation and encouraging action. 
 
 &nbsp;
 
