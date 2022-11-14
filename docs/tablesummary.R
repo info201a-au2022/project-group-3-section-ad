@@ -1,12 +1,9 @@
 unemployment_rate_women <- read.csv("C:/Users/katie/Documents/info201/assignments/project-group-3-section-ad/data/unemployment-rate-women.csv")
 View(unemployment_rate_women)
 
-unemployment_rate_women <- unemployment_rate_women %>% 
-  mutate(unemployment_rate_women$Unemployment_rate_women, round, digits=2)
-
-?mutate_if
-
 names(unemployment_rate_women) [4] = "Unemployment_rate_women"
+
+unemployment_rate_women$Unemployment_rate_women <- round(unemployment_rate_women$Unemployment_rate_women, digit=2)
 
 long_run_perspective <- read.csv("C:/Users/katie/Documents/info201/assignments/project-group-3-section-ad/data/Long run perspective on female labor force participation rates.csv")
 View(long_run_perspective)
@@ -28,6 +25,8 @@ View(ratio_of_female_to_labor_force_participation_rates)
 
 names(ratio_of_female_to_labor_force_participation_rates) [4] = "ratio_of_female_to_male_labor_force_participation_rate"
 
+ratio_of_female_to_labor_force_participation_rates$ratio_of_female_to_male_labor_force_participation_rate <- round(ratio_of_female_to_labor_force_participation_rates$ratio_of_female_to_male_labor_force_participation_rate, digit=2)
+
 summary_table_1 <- left_join(unemployment_rate_women, long_run_perspective, group_by= c("Year", "Entity", "Code"), all.x=TRUE)
 View(summary_table_1)
   
@@ -36,12 +35,13 @@ View(summary_table_2)
 
 summary_table_3 <- left_join(summary_table_2, ratio_of_female_to_labor_force_participation_rates, group_by=c("Year", "Entity", "Code"), all.x=TRUE)
 
+names(summary_table_3) [1] = "Country"
+
 View(summary_table_3)
 
 ?group_by
 
 ?groupby
-
 
 
 
