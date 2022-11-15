@@ -45,10 +45,198 @@ summary(cars)
 
 ## Including Plots
 
-You can also embed plots, for example:
+```{r, echo=FALSE}
+library(dplyr)
+library(tidyverse)
+library(knitr)
+unemployment_rate_women <- read.csv("C:/Users/katie/Documents/info201/assignments/project-group-3-section-ad/data/unemployment-rate-women.csv")
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+names(unemployment_rate_women) [4] = "Unemployment_rate_women"
+
+unemployment_rate_women$Unemployment_rate_women <- round(unemployment_rate_women$Unemployment_rate_women, digit=2)
+
+long_run_perspective <- read.csv("C:/Users/katie/Documents/info201/assignments/project-group-3-section-ad/data/Long run perspective on female labor force participation rates.csv")
+
+names(long_run_perspective) [4] = "long_run_(female_labor_force_participation_rate"
+
+female_labor_force_by_age <- read.csv("C:/Users/katie/Documents/info201/assignments/project-group-3-section-ad/data/female-labor-force-by-age.csv")
+
+names(female_labor_force_by_age) [4] = "65+_(FiLF)"
+names(female_labor_force_by_age) [5] = "55-64_females_in_labor_force"
+names(female_labor_force_by_age) [6] = "45-54_females_in_labor_force"
+names(female_labor_force_by_age) [7] = "35-44_females_in_labor_force"
+names(female_labor_force_by_age) [8] = "25-34_females_in_labor_force"
+names(female_labor_force_by_age) [9] = "15-24_females_in_labor_force"
+
+ratio_of_female_to_labor_force_participation_rates <- read.csv("C:/Users/katie/Documents/info201/assignments/project-group-3-section-ad/data/ratio-of-female-to-male-labor-force-participation-rates.csv")
+
+names(ratio_of_female_to_labor_force_participation_rates) [4] = "ratio_of_female_to_male_labor_force_participation_rate"
+
+ratio_of_female_to_labor_force_participation_rates$ratio_of_female_to_male_labor_force_participation_rate <- round(ratio_of_female_to_labor_force_participation_rates$ratio_of_female_to_male_labor_force_participation_rate, digit=2)
+
+summary_table_1 <- left_join(unemployment_rate_women, long_run_perspective, group_by= c("Year", "Entity", "Code"), all.x=TRUE)
+  
+summary_table_2 <- left_join(summary_table_1, female_labor_force_by_age, group_by = c("Year", "Entity", "Code"), all.x=TRUE)
+
+summary_table_3 <- left_join(summary_table_2, ratio_of_female_to_labor_force_participation_rates, group_by=c("Year", "Entity", "Code"), all.x=TRUE)
+
+names(summary_table_3) [1] = "Country"
+
+head(summary_table_3, 10)
+
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+```{r, echo=FALSE}
+#List Containing Different Values from Data Set
+summary_info <- list()
+
+# 1 - Number of Observations 
+summary_info$number_observations <- nrow(summary_table_3)
+summary_info$number_observations
+
+# 2 & 3 - Number of Unique Countries/Entities in Dataset
+summary_info$list_of_countries <- unique(summary_table_3$Entity)
+summary_info$list_of_countries
+
+summary_info$number_of_countries <- n_distinct(summary_table_3$Entity)
+summary_info$number_of_countries
+
+#4 & 5 - Highest/Lowest Unemployment Rate of Women
+summary_info$highest_unemployment_rate_of_women <- summary_table_3 %>% 
+  filter(Unemployment_rate_women == max(Unemployment_rate_women, na.rm = TRUE)) %>% 
+  pull(Year,Country)
+summary_info$highest_unemployment_rate_of_women
+
+summary_info$lowest_unemployment_rate_of_women <- summary_table_3 %>% 
+  filter(Unemployment_rate_women == min(Unemployment_rate_women, na.rm = TRUE)) %>% 
+  pull(Year,Country)
+summary_info$lowest_unemployment_rate_of_women
+
+# 6 & 7 -Highest/Lowest Long Run Perspective on Female Labor Force Participation Rates
+summary_info$highest_long_run_perspective <- summary_table_3 %>% 
+  filter(long_run_perspective_female_labor_force_participation_rate == 
+           max(long_run_perspective_female_labor_force_participation_rate,
+               na.rm = TRUE)) %>% 
+  pull(Year, Country)
+summary_info$highest_long_run_perspective
+
+summary_info$lowest_long_run_perspective <- summary_table_3 %>% 
+  filter(long_run_perspective_female_labor_force_participation_rate == 
+           min(long_run_perspective_female_labor_force_participation_rate,
+               na.rm = TRUE)) %>% 
+  pull(Year, Country)
+summary_info$lowest_long_run_perspective
+
+#Summary Information List
+View(summary_info)
+```
+
+```{r, echo=FALSE}
+chart1 <- ggplot() +
+  geom_line(aes(y=long_run_perspective_female_labor_force_participation_rate, x=Year,group=Entity, color=Entity), data = long_run_perspective) +
+  ggtitle("Long-run Perspective on Female Labor Force Participation Rates", subtitle= "Proportion of the Female Population Ages 15 and Over that is Economically Active") +
+  xlab("Year") +
+  ylab("Female Labor Force Participation Rates (%)")
+
+chart1
+
+# Summary Paragraph
+# We chose to incorporate this graph into our research as we believe it accurately
+# depicts the long-run perspective on female labor force participation rates
+# over the course of the past 100 years. We chose to include many countries
+# in this visualizaiton as we believe it encompasses broader trends across
+# the world. One observation from the graph is that a majority of the data
+# was compiled beginning in the 1960-70s, with very few countries having data
+# that dates back prior to the 1920s. Another observation is that nearly every
+# country has experienced rapid growth in the percentage of the female population,
+# 15+, that is economically active compared to the growth rates in the earlier
+# periods, such as 1920-1960.
+```
+
+```{r, echo=FALSE}
+library(maps)
+mapdata <- map_data("world")
+
+View(mapdata)
+
+View(unemployment_rate_women)
+
+names(unemployment_rate_women) [1] = "region"
+
+unemployment_rate_women <- subset(unemployment_rate_women, region!= "Americas: High income" & region!= "Americas: Low income" & region!= "Americas: Lower-middle income" & region!= "Americas: Upper-middle income" & region!= "Africa: Low income" & region!= "Africa: Lower-middle income"& region!= "Africa: Upper-middle income" & region!= "Americas") 
+
+View(unemployment_rate_women)
+
+unemployment_rate_women_chart <- read.csv("C:/Users/katie/Documents/info201/assignments/project-group-3-section-ad/data/unemployment-rate-women-chart.csv") %>% 
+  filter(Year==2017)
+
+View(unemployment_rate_women_chart)
+
+mapdata <- left_join(mapdata,unemployment_rate_women_chart, group_by= "region")
+
+mapdata1 <- mapdata %>% 
+  filter(!is.na(mapdata$Unemployment_rate_women))
+
+map1 <- ggplot(mapdata1, aes( x = long, y= lat, group=group)) +
+  geom_polygon(aes(fill = Unemployment_rate_women), color = "black")
+
+map2 <- map1 + scale_fill_gradient(name = "Female Unemployment Rate (%)", low = "pink", high = "red", na.value = "grey50")
+
+chart2 <- map1 + scale_fill_gradient(name = "Female Unemployment Rate (%)", low = "pink", high = "red", na.value = "grey50")+
+  theme(axis.text.x = element_blank(),
+        axis.text.y = element_blank(),
+        axis.ticks = element_blank (),
+        axis.title.y = element_blank(),
+        axis.title.x = element_blank (),
+        rect = element_blank()) +
+  ggtitle("Unemployment Rate, Women, 2017", subtitle= "The unemployment rate expresses the number of unemployed as a percent of the labor
+force. Countries in white have no unemployment data recorded.")
+
+chart2
+
+library(dplyr)
+library(tidyverse)
+
+
+#Summary Paragraph
+#We decided to include a chart of the unemployment rate with the most recent data (2017) to show the current (or most recent) 
+#state of female unemployment. The other data sets displays trends over time so this data set summarizes that state that those 
+#long-term trends have lead to. Unemployment data is a major indicator of job certainty and equality so we chose
+#this feature as a key one to highlight. The observations include unemployment data from 2017 from most countries in
+#the world. The countries that were not documented in the data set are displayed in white on the graph. This map is in the form
+#of a heat map where the more red the countries are, the higher unemployment rate they have, and the more pink the 
+#countries are, the lower unemployment rate they have.
+```
+
+```{r, echo=FALSE}
+library(ggplot2)
+library(dplyr)
+
+#Stacked Area Chart
+chart_3_data_set_complete <- read.csv("C:/Users/katie/Documents/info201/assignments/project-group-3-section-ad/data/female-labor-force-by-age-chart-3-v2.csv")
+View(chart_3_data_set_complete)
+
+chart3 <- ggplot(chart_3_data_set_complete, aes(x = Year, y = Number, fill = Age)) +
+  geom_area(colour = "black", size = .2, alpha = .4) +
+  scale_fill_brewer(palette = "Reds") +
+  geom_line(position = "stack", size = .3) +
+  labs(title = "Female Labor Force by Age",
+     x = "Year",
+     y = "Number of Females (In Millions)") +
+  theme(panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.background = element_blank()) 
+chart3
+
+# Summary Paragraph
+# We chose to incorporate this graph into our research as we believe it does 
+# a great job of showing the changes in the number of females in the labor
+# force, over the course of 1990 through 2030 (projected). Through the stacked
+# area chart, it very clearly shows the changes in the labor force numbers
+# by age group, with the legend/color scale directly to the right of the chart.
+# One immediate observation from the chart is that groups, particularly ages
+# 15-24, 25-34, and 35-44 have experienced the highest growth rates over the 
+# period.
+```
+
