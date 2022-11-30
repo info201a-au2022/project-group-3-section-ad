@@ -41,3 +41,5 @@ summary_info$lowest_long_run_perspective
 
 #Summary Information List
 View(summary_info)
+
+head(summary_table_3, 10)
